@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies</title>
+
+    <!-- Link to jQuery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" 
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <!-- CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            padding-top: 150px;
+        }
+
+        header h1 {
+            text-align: center;
+            color: #e50914;
+            padding: 1rem 0;
+        }
+
+        .movie-section {
+            padding: 2rem;
+        }
+
+        h2 {
+            text-align: center;
+            color: #e50914;
+            margin-bottom: 2rem;
+        }
+
+        .top-movies, .top-five {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .movie-card {
+            position: relative;
+            width: 30%;
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .movie-card img {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+            transition: opacity 0.3s ease;
+        }
+
+        .movie-card video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            border-radius: 8px;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .movie-card:hover img {
+            opacity: 0;
+        }
+
+        .movie-card:hover video {
+            opacity: 1;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+            text-align: center;
+            z-index: 1000;
+            width: 250px;
+        }
+
+        .tooltip h3 {
+            margin-bottom: 0.5rem;
+            color: #e50914;
+        }
+
+        .tooltip p {
+            font-size: 0.9rem;
+            margin: 0.2rem 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Our Top Movies Showcase</h1>
+    </header>
+
+    <main>
+        <!-- Top 3 Movies Section -->
+        <section class="movie-section">
+            <h2>Top 3 Rated Movies</h2>
+            <div class="top-movies">
+                <div class="movie-card" data-title="Mamma Mia!" data-genre="Musical, Romantic Comedy" data-cast="Meryl Streep, Amanda Seyfried">
+                    <img src="mammamia.jpg" alt="Mamma Mia Poster">
+                    <video muted loop>
+                        <source src="mammamia.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="movie-card" data-title="Movie Title 2" data-genre="Thriller, Mystery" data-cast="Actor X, Actor Y">
+                    <img src="cover2.jpg" alt="Movie 2 Cover">
+                    <video muted loop>
+                        <source src="top2.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="movie-card" data-title="Movie Title 3" data-genre="Drama, Romance" data-cast="Actor P, Actor Q">
+                    <img src="cover3.jpg" alt="Movie 3 Cover">
+                    <video muted loop>
+                        <source src="top3.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top 5 Picks Section -->
+        <section class="movie-section">
+            <h2>Top 5 of Our Picks</h2>
+            <div class="top-five">
+                <div class="movie-card" data-title="Movie Title 4" data-genre="Comedy" data-cast="Actor C, Actor D">
+                    <img src="cover4.jpg" alt="Movie 4 Cover">
+                    <video muted loop>
+                        <source src="top4.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="movie-card" data-title="Movie Title 5" data-genre="Horror" data-cast="Actor E, Actor F">
+                    <img src="cover5.jpg" alt="Movie 5 Cover">
+                    <video muted loop>
+                        <source src="top5.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="movie-card" data-title="Movie Title 6" data-genre="Documentary" data-cast="Actor G, Actor H">
+                    <img src="cover6.jpg" alt="Movie 6 Cover">
+                    <video muted loop>
+                        <source src="top6.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="movie-card" data-title="Movie Title 7" data-genre="Adventure" data-cast="Actor I, Actor J">
+                    <img src="cover7.jpg" alt="Movie 7 Cover">
+                    <video muted loop>
+                        <source src="top7.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="movie-card" data-title="Movie Title 8" data-genre="Fantasy" data-cast="Actor K, Actor L">
+                    <img src="cover8.jpg" alt="Movie 8 Cover">
+                    <video muted loop>
+                        <source src="top8.mp4" type="video/mp4">
+                    </video>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Tooltip -->
+    <div id="tooltip" class="tooltip"></div>
+
+    <!-- JavaScript -->
+    <script>
+        const movieCards = document.querySelectorAll('.movie-card');
+        const tooltip = document.getElementById('tooltip');
+
+        movieCards.forEach((card) => {
+            const video = card.querySelector('video');
+
+            card.addEventListener('mouseenter', () => {
+                video.play();
+                const title = card.getAttribute('data-title');
+                const genre = card.getAttribute('data-genre');
+                const cast = card.getAttribute('data-cast');
+
+                tooltip.innerHTML = `
+                    <h3>${title}</h3>
+                    <p><strong>Genre:</strong> ${genre}</p>
+                    <p><strong>Cast:</strong> ${cast}</p>
+                `;
+                tooltip.style.display = 'block';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                video.pause();
+                video.currentTime = 0;
+                tooltip.style.display = 'none';
+            });
+
+            card.addEventListener('mousemove', (e) => {
+                tooltip.style.left = `${e.pageX + 15}px`;
+                tooltip.style.top = `${e.pageY + 15}px`;
+            });
+        });
+    </script>
+
+</body>
+</html>
